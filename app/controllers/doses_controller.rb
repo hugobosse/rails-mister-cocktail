@@ -1,54 +1,31 @@
 class DosesController < ApplicationController
   before_action :set_dose, only: [:show, :edit, :update, :destroy]
 
-  # GET /doses
-  # GET /doses.json
-  def index
-    @doses = Dose.all
-  end
-
-  # GET /doses/1
-  # GET /doses/1.json
   def show
   end
 
-  # GET /doses/new
   def new
     @dose = Dose.new
   end
 
-  # GET /doses/1/edit
   def edit
   end
 
-  # POST /doses
-  # POST /doses.json
   def create
     @dose = Dose.new(dose_params)
-
-    respond_to do |format|
-      if @dose.save
-        format.html { redirect_to @dose, notice: 'Dose was successfully created.' }
-        format.json { render :show, status: :created, location: @dose }
-      else
-        format.html { render :new }
-        format.json { render json: @dose.errors, status: :unprocessable_entity }
-      end
+    @cocktail = Cocktail.find(params[:cocktail_id])
+    @dose.cocktail = @cocktail
+    @doses = @cocktail.doses
+    if @dose.save
+      redirect_to cocktail_path
+    else
+      render 'cocktails/show'
     end
   end
 
   # PATCH/PUT /doses/1
   # PATCH/PUT /doses/1.json
   def update
-    respond_to do |format|
-      if @dose.update(dose_params)
-        format.html { redirect_to @dose, notice: 'Dose was successfully updated.' }
-        format.json { render :show, status: :ok, location: @dose }
-      else
-        format.html { render :edit }
-        format.json { render json: @dose.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # DELETE /doses/1
@@ -69,6 +46,6 @@ class DosesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def dose_params
-      params.fetch(:dose, {})
+      params.require(:dose).permit(:description)
     end
 end
