@@ -2,7 +2,10 @@
 <p>Find me in app/views/cocktails/index.html.erb</p>
 
   <% @cocktails.each do |cocktail| %>
-    <%= cocktail.name %>
+    <h2><%= cocktail.name %><h2>
+    <p><%= link_to 'more', cocktail_path(cocktail) %></p>
+    <p><%= link_to "delete", cocktail_path(cocktail), method: :delete %></p>
+
   <% end %>
 
 <%= link_to 'New Cocktail', new_cocktail_path %>

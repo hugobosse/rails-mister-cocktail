@@ -1,5 +1,16 @@
-<h1>New Dose</h1>
+<h1>Add dose to <%= @cocktail.name %></h1>
 
-<%= render 'form', dose: @dose %>
+<%= simple_form_for([@cocktail, @dose]) do |f| %>
+  <%= f.error_notification %>
 
-<%= link_to 'Back', doses_path %>
+  <div class="form-inputs">
+    <%= f.input :description %>
+    <%= f.input :ingredient_id, collection: @ingredients%>
+  </div>
+
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
+
